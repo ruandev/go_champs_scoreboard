@@ -7,7 +7,7 @@ ARG RUNNER_IMAGE="debian:${DEBIAN_VERSION}"
 
 FROM ${BUILDER_IMAGE} AS builder
 
-RUN apt-get update -y && apt-get install -y build-essential git curl \
+RUN apt-get update -y && apt-get install -y build-essential git curl nodejs npm \
     && apt-get clean && rm -f /var/lib/apt/lists/*_*
 
 WORKDIR /app
@@ -22,6 +22,9 @@ RUN mkdir config
 COPY config/config.exs config/${MIX_ENV}.exs config/
 RUN mix deps.get --only $MIX_ENV
 RUN mix deps.compile
+
+COPY package.json package-lock.json ./
+RUN npm ci
 
 COPY priv priv
 COPY lib lib
