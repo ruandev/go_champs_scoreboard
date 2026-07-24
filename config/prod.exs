@@ -9,11 +9,12 @@ config :go_champs_scoreboard, GoChampsScoreboardWeb.Endpoint,
   cache_static_manifest: "priv/static/cache_manifest.json",
   force_ssl: [rewrite_on: [:x_forwarded_proto]]
 
+# DATABASE_URL and POOL_SIZE are set at runtime (config/runtime.exs), since
+# they're read via System.get_env and must reflect the deploy environment,
+# not whatever was set when the release was compiled.
 config :go_champs_scoreboard, GoChampsScoreboard.Repo,
   ssl: true,
-  ssl_opts: [verify: :verify_none],
-  url: System.get_env("DATABASE_URL"),
-  pool_size: String.to_integer(System.get_env("POOL_SIZE") || "10")
+  ssl_opts: [verify: :verify_none]
 
 # Configures Swoosh API Client
 config :swoosh, api_client: Swoosh.ApiClient.Finch, finch_name: GoChampsScoreboard.Finch

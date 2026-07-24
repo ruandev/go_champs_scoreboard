@@ -20,6 +20,18 @@ if System.get_env("PHX_SERVER") do
   config :go_champs_scoreboard, GoChampsScoreboardWeb.Endpoint, server: true
 end
 
+if config_env() != :test do
+  config :go_champs_scoreboard, :http_client,
+    url: System.get_env("GO_CHAMPS_API_URL") || "https://go-champs-api-staging.herokuapp.com/"
+end
+
+config :go_champs_scoreboard, GoChampsScoreboard.Infrastructure.RabbitMQ,
+  host: System.get_env("RABBIT_MQ_HOST") || "shared-rabbitmq",
+  port: String.to_integer(System.get_env("RABBIT_MQ_PORT") || "5672"),
+  username: System.get_env("RABBIT_MQ_USERNAME") || "local_user",
+  password: System.get_env("RABBIT_MQ_PASSWORD") || "local_pass",
+  virtual_host: System.get_env("RABBIT_MQ_VHOST") || "/"
+
 if config_env() == :prod do
   # The secret key base is used to sign/encrypt cookies and other secrets.
   # A default value is used in config/dev.exs and config/test.exs but you
@@ -37,6 +49,10 @@ if config_env() == :prod do
   port = String.to_integer(System.get_env("PORT") || "4000")
 
   config :go_champs_scoreboard, :dns_cluster_query, System.get_env("DNS_CLUSTER_QUERY")
+
+  config :go_champs_scoreboard, GoChampsScoreboard.Repo,
+    url: System.get_env("DATABASE_URL"),
+    pool_size: String.to_integer(System.get_env("POOL_SIZE") || "10")
 
   config :go_champs_scoreboard, GoChampsScoreboardWeb.Endpoint,
     url: [host: host, port: 443, scheme: "https"],

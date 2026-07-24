@@ -27,16 +27,14 @@ config :go_champs_scoreboard, GoChampsScoreboardWeb.Endpoint,
   live_view: [signing_salt: "omrp2vU9"]
 
 # Configure HTTP Client
-config :go_champs_scoreboard, :http_client,
-  http_client: HTTPoison,
-  url: System.get_env("GO_CHAMPS_API_URL") || "https://go-champs-api-staging.herokuapp.com/"
+config :go_champs_scoreboard, :http_client, http_client: HTTPoison
+# :url is set at runtime (config/runtime.exs), since it's read via
+# System.get_env and must reflect the deploy environment, not whatever
+# was set when the release was compiled.
 
-config :go_champs_scoreboard, GoChampsScoreboard.Infrastructure.RabbitMQ,
-  host: System.get_env("RABBIT_MQ_HOST") || "shared-rabbitmq",
-  port: System.get_env("RABBIT_MQ_PORT") || 5672,
-  username: System.get_env("RABBIT_MQ_USERNAME") || "local_user",
-  password: System.get_env("RABBIT_MQ_PASSWORD") || "local_pass",
-  virtual_host: System.get_env("RABBIT_MQ_VHOST") || "/"
+# RabbitMQ connection is configured at runtime (config/runtime.exs), since
+# it's read via System.get_env and must reflect the deploy environment, not
+# whatever was set when the release was compiled.
 
 # Configures the mailer
 #
