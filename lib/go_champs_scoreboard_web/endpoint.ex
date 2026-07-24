@@ -19,7 +19,7 @@ defmodule GoChampsScoreboardWeb.Endpoint do
     ]
 
   # CORS configuration
-  @cors_config Application.compile_env(:go_champs_scoreboard, __MODULE__)[:cors] || [origins: "*"]
+  @cors_config Application.compile_env(:go_champs_scoreboard, [__MODULE__, :cors], origins: "*")
 
   plug Corsica,
        @cors_config
