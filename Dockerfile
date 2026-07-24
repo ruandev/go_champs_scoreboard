@@ -58,4 +58,7 @@ USER nobody
 
 EXPOSE 4000
 
+HEALTHCHECK --interval=10s --timeout=5s --start-period=20s --retries=5 \
+  CMD wget --header="X-Forwarded-Proto: https" --spider -q http://localhost:4000/ || exit 1
+
 CMD ["/app/bin/go_champs_scoreboard", "start"]
