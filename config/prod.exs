@@ -7,7 +7,6 @@ import Config
 # before starting your production server.
 config :go_champs_scoreboard, GoChampsScoreboardWeb.Endpoint,
   cache_static_manifest: "priv/static/cache_manifest.json",
-  url: [port: 443, scheme: "https"],
   force_ssl: [rewrite_on: [:x_forwarded_proto]]
 
 config :go_champs_scoreboard, GoChampsScoreboard.Repo,
