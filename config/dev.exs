@@ -18,6 +18,7 @@ config :go_champs_scoreboard, GoChampsScoreboard.Repo,
 # watchers to your application. For example, we can use it
 # to bundle .js and .css sources.
 config :go_champs_scoreboard, GoChampsScoreboardWeb.Endpoint,
+  url: [host: "localhost"],
   # Binding to loopback ipv4 address prevents access from other machines.
   # Change to `ip: {0, 0, 0, 0}` to allow access from other machines.
   http: [ip: {0, 0, 0, 0}, port: 4000],

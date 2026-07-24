@@ -18,7 +18,6 @@ config :go_champs_scoreboard, GoChampsScoreboard.Repo,
 
 # Configures the endpoint
 config :go_champs_scoreboard, GoChampsScoreboardWeb.Endpoint,
-  url: [host: "localhost"],
   adapter: Bandit.PhoenixAdapter,
   render_errors: [
     formats: [html: GoChampsScoreboardWeb.ErrorHTML, json: GoChampsScoreboardWeb.ErrorJSON],
