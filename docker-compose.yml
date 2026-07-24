@@ -31,7 +31,11 @@ services:
       start_period: 20s
     networks:
       - coolify
+      - resource
 
 networks:
   coolify:
     external: true
+  resource:
+    external: true
+    name: ${COOLIFY_RESOURCE_UUID}
