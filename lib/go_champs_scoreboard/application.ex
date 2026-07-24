@@ -11,6 +11,14 @@ defmodule GoChampsScoreboard.Application do
     redis_password = System.get_env("REDIS_PASSWORD") || nil
     redis_url = System.get_env("REDIS_URL") || "redis"
 
+    {redis_uri, redis_opts} =
+      if String.starts_with?(redis_url, "redis://") or String.starts_with?(redis_url, "rediss://") do
+        {redis_url, [name: :games_cache]}
+      else
+        {"redis://#{redis_url}",
+         [name: :games_cache, username: redis_username, password: redis_password]}
+      end
+
     children = [
       # Start the Ecto repository
       GoChampsScoreboard.Repo,
@@ -38,9 +46,7 @@ defmodule GoChampsScoreboard.Application do
       {DNSCluster,
        query: Application.get_env(:go_champs_scoreboard, :dns_cluster_query) || :ignore},
       {Phoenix.PubSub, name: GoChampsScoreboard.PubSub},
-      {Redix,
-       {"redis://#{redis_url}",
-        [name: :games_cache, username: redis_username, password: redis_password]}},
+      {Redix, {redis_uri, redis_opts}},
       # Start the Finch HTTP client for sending emails
       {Finch, name: GoChampsScoreboard.Finch},
       # Start a worker by calling: GoChampsScoreboard.Worker.start_link(arg)
