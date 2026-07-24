@@ -24,7 +24,15 @@ services:
       GO_CHAMPS_API_URL: ${GO_CHAMPS_API_URL}
       DNS_CLUSTER_QUERY: ${DNS_CLUSTER_QUERY:-}
     healthcheck:
-      test: ['CMD', 'wget', '--spider', '-q', 'http://localhost:4000/']
+      test:
+        [
+          'CMD',
+          'wget',
+          '--header=X-Forwarded-Proto: https',
+          '--spider',
+          '-q',
+          'http://localhost:4000/',
+        ]
       interval: 10s
       timeout: 5s
       retries: 5
